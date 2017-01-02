@@ -2,13 +2,21 @@ package main
 
 import (
 	"fmt"
+	"github.com/BurntSushi/toml"
 	"github.com/RangelReale/osin"
 	"os"
 	"tiki_oauth/server"
 )
 
 func main() {
-	pool, err := server.RedisStorage("127.0.0.1", "6379", "1", "3")
+
+	config := server.RedisConfig{}
+	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
+		fmt.Println(err)
+		return
+	}
+
+	pool, err := server.RedisStorage(&config)
 
 	if err != nil {
 		fmt.Println(fmt.Errorf("Fail to initialize redis service: %s", err.Error()))
