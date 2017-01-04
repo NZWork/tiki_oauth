@@ -14,6 +14,7 @@ type TikiConfig struct {
 	DB      uint
 	Timeout uint
 	API     string
+	Domain  string
 }
 
 var cfg *TikiConfig

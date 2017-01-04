@@ -16,7 +16,7 @@ func OAuthIframe(w http.ResponseWriter, r *http.Request) {
 	// GET 方式
 	if r.Method != "POST" {
 		w.Write([]byte("<html><body>"))
-		w.Write([]byte(fmt.Sprintf("<form action=\"/authorize?%s\" method=\"POST\">", r.URL.RawQuery)))
+		w.Write([]byte(fmt.Sprintf("<form action=\"%s/authorize?%s\" method=\"POST\">", cfg.Domain, r.URL.RawQuery)))
 		w.Write([]byte("Login: <input type=\"text\" name=\"login\" /><br/>"))
 		w.Write([]byte("Password: <input type=\"password\" name=\"password\" /><br/>"))
 		w.Write([]byte("<input type=\"submit\"/>"))

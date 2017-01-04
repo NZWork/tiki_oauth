@@ -14,12 +14,13 @@ func main() {
 	config := server.TikiConfig{}
 
 	var configFile = flag.String("c", "config", "config file name(current only support toml format, and without .toml)")
+	flag.Parse()
 
 	if _, err := toml.DecodeFile(*configFile+".toml", &config); err != nil {
 		fmt.Println(err)
 		return
 	}
-	fmt.Println("Loading config...")
+	fmt.Printf("Loading config[%s]...\n", *configFile)
 	server.SetConfig(&config)
 
 	pool, err := server.RedisStorage()

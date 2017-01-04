@@ -1,5 +1,6 @@
-ip = "127.0.0.1"
-port = 30005
+ip = "test-redis"
+port = 6379
 db = 0
 timeout = 3
+domain = "https://oauth.tiki.im"
 api = "https://app.dev.tiki.im/api/nz/"
