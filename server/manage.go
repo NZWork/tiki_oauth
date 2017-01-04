@@ -6,13 +6,14 @@ import (
 )
 
 func addOAuthClient(w http.ResponseWriter, r *http.Request) {
-	client := osin.DefaultClient{
+	r.ParseForm()
+	client := &osin.DefaultClient{
 		Id:          r.PostForm.Get("id"),
 		Secret:      r.PostForm.Get("secret"),
 		RedirectUri: r.PostForm.Get("redirect_uri"),
 	}
 
-	err := storage.CreateClient(&client)
+	err := storage.CreateClient(client)
 
 	resp := server.NewResponse()
 	resp.Output["stat"] = 1
@@ -24,6 +25,7 @@ func addOAuthClient(w http.ResponseWriter, r *http.Request) {
 }
 
 func updateOAuthClient(w http.ResponseWriter, r *http.Request) {
+	r.ParseForm()
 	client, err := storage.GetClient(r.PostForm.Get("id"))
 
 	resp := server.NewResponse()

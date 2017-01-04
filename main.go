@@ -10,13 +10,16 @@ import (
 
 func main() {
 
-	config := server.RedisConfig{}
+	config := server.TikiConfig{}
 	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
 		fmt.Println(err)
 		return
 	}
+	fmt.Println("Loading config...")
+	server.SetConfig(&config)
 
-	pool, err := server.RedisStorage(&config)
+	pool, err := server.RedisStorage()
+	fmt.Println("OAuth storage[redis] connecting...")
 
 	if err != nil {
 		fmt.Println(fmt.Errorf("Fail to initialize redis service: %s", err.Error()))
@@ -28,6 +31,8 @@ func main() {
 	sconfig.AllowedAccessTypes = osin.AllowedAccessType{osin.AUTHORIZATION_CODE, osin.REFRESH_TOKEN}
 	sconfig.AllowGetAccessRequest = true
 	sconfig.AllowClientSecretInParams = true
+	sconfig.RedirectUriSeparator = "#" // 多回调地址支持，分隔符
 
+	fmt.Println("Initialized Tiki OAuth Service\nHype Life!")
 	server.Run(sconfig, pool)
 }

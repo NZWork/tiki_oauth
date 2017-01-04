@@ -1,4 +1,5 @@
-ip = "127.0.0.1"
-port = 6379
+ip = "10.1.1.7"
+port = 30005
 db = 1
 timeout = 3
+api = "http://app.dev.tiki.im/api/nz/"

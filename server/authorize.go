@@ -14,31 +14,54 @@ import (
 // redirect_uri
 
 func AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
+
 	resp := server.NewResponse()
 	defer resp.Close()
 
-	if ar := server.HandleAuthorizeRequest(resp, r); ar != nil {
+	if r.Method == "POST" {
 		r.ParseForm()
-		if r.Method != "POST" || r.Form.Get("login") != "test" || r.Form.Get("password") != "test" {
-			w.Write([]byte("<html><body>"))
-			w.Write([]byte(fmt.Sprintf("LOGIN %s (use test/test)<br/>", ar.Client.GetId())))
-			w.Write([]byte(fmt.Sprintf("<form action=\"/authorize?%s\" method=\"POST\">", r.URL.RawQuery)))
-			w.Write([]byte("Login: <input type=\"text\" name=\"login\" /><br/>"))
-			w.Write([]byte("Password: <input type=\"password\" name=\"password\" /><br/>"))
-			w.Write([]byte("<input type=\"submit\"/>"))
-			w.Write([]byte("</form>"))
-			w.Write([]byte("</body></html>"))
+		if r.Form.Get("response_type") == "" || r.Form.Get("client_id") == "" || r.Form.Get("redirect_uri") == "" {
+			fmt.Printf("%v", r.PostForm.Encode())
+			resp.Output["code"] = 400
+			resp.Output["msg"] = "invalid params given"
+			osin.OutputJSON(resp, w, r)
 			return
 		}
-		ar.UserData = struct{ ID uint64 }{ID: 7}
-		ar.Authorized = true
+	} else {
+		http.Redirect(w, r, "/auth?"+r.URL.RawQuery, 301)
+		return
+	}
+
+	api := &APIResponse{}
+
+	if ar := server.HandleAuthorizeRequest(resp, r); ar != nil {
+
+		// 校验用户数据
+		resposne, _ := PostAPI(cfg.API+"login", map[string]interface{}{
+			"email":  r.PostForm.Get("login"),
+			"passwd": r.PostForm.Get("password"),
+		})
+
+		api = DecodeAPIResponse(resposne)
+
+		ar.Authorized = false // 默认
+
+		if api.Code == 1200 {
+			ar.UserData = api.Result["id"].(float64)
+
+			resp.Output["uid"] = api.Result["id"].(float64)
+			ar.Authorized = true
+		}
 		server.FinishAuthorizeRequest(resp, r, ar)
 	}
+
 	if resp.IsError && resp.InternalError != nil {
 		fmt.Printf("ERROR: %s\n", resp.InternalError)
 	}
-	if !resp.IsError {
-		resp.Output["uid"] = 7 // Get user id for further use
+	if api.Code != 1200 {
+		resp.Output["api_msg"] = api.Msg
+		resp.Output["api_code"] = api.Code
 	}
+
 	osin.OutputJSON(resp, w, r)
 }

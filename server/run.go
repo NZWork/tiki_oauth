@@ -17,6 +17,9 @@ func Run(sconfig *osin.ServerConfig, pool *redis.Pool) {
 
 	server = osin.NewServer(sconfig, storage)
 
+	// OAuth Iframe enpoint
+	http.HandleFunc("/auth", OAuthIframe)
+
 	// Authorization code endpoint
 	http.HandleFunc("/authorize", AuthorizeHandler)
 	// Access Token
@@ -32,8 +35,12 @@ func Run(sconfig *osin.ServerConfig, pool *redis.Pool) {
 		r.ParseForm()
 
 		json.NewEncoder(w).Encode(map[string]string{
-			"code": r.Form.Get("code"),
-			"uid":  r.Form.Get("uid"),
+			"code":              r.Form.Get("code"),
+			"uid":               r.Form.Get("uid"),
+			"api_code":          r.Form.Get("api_code"),
+			"api_msg":           r.Form.Get("api_msg"),
+			"error":             r.Form.Get("error"),
+			"error_description": r.Form.Get("error_description"),
 		})
 	})
 

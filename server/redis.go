@@ -12,27 +12,18 @@ var (
 	REDIS_TIMEOUT = 5
 )
 
-type RedisConfig struct {
-	IP      string
-	Port    uint
-	DB      uint
-	Timeout uint
-}
-
-var rdc *RedisConfig
-
 func newPool() *redis.Pool {
 	return &redis.Pool{
 		MaxIdle:     3,
 		IdleTimeout: 240 * time.Second,
 		Dial: func() (redis.Conn, error) {
-			c, err := redis.Dial("tcp", fmt.Sprintf("%s:%d", rdc.IP, rdc.Port))
+			c, err := redis.Dial("tcp", fmt.Sprintf("%s:%d", cfg.IP, cfg.Port))
 
 			if err != nil {
 				return nil, err
 			}
 
-			if _, err = c.Do("SELECT", rdc.DB); err != nil {
+			if _, err = c.Do("SELECT", cfg.DB); err != nil {
 				c.Close()
 				return nil, err
 			}
@@ -50,9 +41,7 @@ func newPool() *redis.Pool {
 	}
 }
 
-func RedisStorage(config *RedisConfig) (*redis.Pool, error) {
-	rdc = config
-
+func RedisStorage() (*redis.Pool, error) {
 	pool := newPool()
 
 	if _, err := pool.Get().Do("PING"); err != nil {
