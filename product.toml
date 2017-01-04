@@ -1,0 +1,5 @@
+ip = "127.0.0.1"
+port = 30005
+db = 0
+timeout = 3
+api = "https://app.dev.tiki.im/api/nz/"

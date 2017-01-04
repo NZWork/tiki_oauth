@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"fmt"
 	"github.com/BurntSushi/toml"
 	"github.com/RangelReale/osin"
@@ -11,7 +12,10 @@ import (
 func main() {
 
 	config := server.TikiConfig{}
-	if _, err := toml.DecodeFile("config.toml", &config); err != nil {
+
+	var configFile = flag.String("c", "config", "config file name(current only support toml format, and without .toml)")
+
+	if _, err := toml.DecodeFile(*configFile+".toml", &config); err != nil {
 		fmt.Println(err)
 		return
 	}
