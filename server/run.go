@@ -11,8 +11,10 @@ import (
 
 var server *osin.Server
 var storage *osinredis.Storage
+var redisPool *redis.Pool
 
 func Run(sconfig *osin.ServerConfig, pool *redis.Pool) {
+	redisPool = pool
 	storage = osinredis.New(pool, "tiki")
 
 	server = osin.NewServer(sconfig, storage)

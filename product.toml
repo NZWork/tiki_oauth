@@ -4,3 +4,4 @@ db = 0
 timeout = 3
 domain = "https://oauth.tiki.im"
 api = "https://app.dev.tiki.im/api/nz/"
+secret = "FdQ1vO1JavNhRmAbiNigC42lq3RwbxHvK4H6yBYJYLkBkGDREhJusBtmj7KrPcjX"

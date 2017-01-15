@@ -15,6 +15,7 @@ type TikiConfig struct {
 	Timeout uint
 	API     string
 	Domain  string
+	Secret  string // API Secret
 }
 
 var cfg *TikiConfig
