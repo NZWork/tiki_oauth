@@ -32,6 +32,7 @@ func Run(sconfig *osin.ServerConfig, pool *redis.Pool) {
 	// Manage API
 	http.HandleFunc("/manage/add", addOAuthClient)
 	http.HandleFunc("/manage/update", updateOAuthClient)
+	http.HandleFunc("/manage/recover", recoverTikiOAuth)
 
 	http.HandleFunc("/appauth/code", func(w http.ResponseWriter, r *http.Request) {
 		r.ParseForm()

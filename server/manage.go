@@ -5,6 +5,24 @@ import (
 	"net/http"
 )
 
+func recoverTikiOAuth(w http.ResponseWriter, r *http.Request) {
+	client := &osin.DefaultClient{
+		Id:          "test",
+		Secret:      "12jh3gas623g",
+		RedirectUri: "https://app.dev.tiki.im/login/callback",
+	}
+
+	err := storage.CreateClient(client)
+
+	resp := server.NewResponse()
+	resp.Output["stat"] = 1
+	if err != nil {
+		resp.Output["stat"] = 0
+		resp.Output["error"] = err.Error()
+	}
+	osin.OutputJSON(resp, w, r)
+}
+
 func addOAuthClient(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	client := &osin.DefaultClient{
