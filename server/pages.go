@@ -5,7 +5,7 @@ import (
 	"net/http"
 )
 
-const OAUTH_TEMPLATE = `
+const OAuthTemplate = `
 <!DOCTYPE html>
 <html>
 
@@ -128,13 +128,19 @@ const OAUTH_TEMPLATE = `
     </div>
 
 
+`
+
+const JS = `
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
 	$('#login').on('click', function() {
 	    $.ajax({
 		type: 'POST',
 		url: '%s/authorize?%s',
-		data: $('#login-form').serialize(),
+		data: {
+			login: $('#email').val(),
+			password: $('#password').val(),
+		},
 		success: function(data) {
 		    console.log(data);
 		    if (data.error != undefined) {
@@ -169,7 +175,8 @@ func OAuthIframe(w http.ResponseWriter, r *http.Request) {
 				w.Write([]byte("</form>"))
 				w.Write([]byte("</body></html>"))
 		*/
-		w.Write([]byte(fmt.Sprintf(OAUTH_TEMPLATE, cfg.Domain, r.URL.RawQuery)))
+		template := fmt.Sprintf(JS, cfg.Domain, r.URL.RawQuery)
+		w.Write([]byte(OAuthTemplate + template))
 		return
 	}
 }
