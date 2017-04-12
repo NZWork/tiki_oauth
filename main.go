@@ -3,11 +3,10 @@ package main
 import (
 	"flag"
 	"fmt"
-	"os"
-	"tiki_oauth/server"
-
 	"github.com/BurntSushi/toml"
 	"github.com/RangelReale/osin"
+	"os"
+	"tiki_oauth/server"
 )
 
 func main() {

@@ -2,9 +2,8 @@ package server
 
 import (
 	"fmt"
-	"net/http"
-
 	"github.com/RangelReale/osin"
+	"net/http"
 )
 
 // code
@@ -23,8 +22,8 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 		resp = server.NewResponse()
 		if r.Form.Get("uid") != "" { // Load account data from *INNER* API
 			response, _ := GetAPI(cfg.API+"user", map[string]interface{}{
-				"uid":   r.Form.Get("uid"),
-				"xauth": cfg.Secret,
+				"uid":              r.Form.Get("uid"),
+				"inner_api_secret": cfg.Secret,
 			})
 
 			data := DecodeAPIResponse(response)

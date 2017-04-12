@@ -116,7 +116,7 @@ const OAuthTemplate = `
 <body>
     <div class="box" id="login-form">
 	<div class="logo">
-	    <p class="slogen"></p>
+	    <p class="slogen">海纳百川，文杰奶大</p>
 	</div>
 	<div class="inputs">
 	    <input class="form-control" type="text" name="login" id="email" placeholder="hello@tiki.im" />
