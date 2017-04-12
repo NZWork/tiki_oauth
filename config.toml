@@ -4,4 +4,4 @@ db = 1
 timeout = 3
 domain = "http://127.0.0.1:7000"
 api = "https://app.dev.tiki.im/api/nz/"
-secret = "FdQ1vO1JavNhRmAbiNigC42lq3RwbxHvK4H6yBYJYLkBkGDREhJusBtmj7KrPcjX"
+secret = "5DE0CB6960FDD55B9F7C26E6554617B5"
