@@ -2,9 +2,10 @@ package server
 
 import (
 	"fmt"
-	"github.com/RangelReale/osin"
 	"net/http"
 	"time"
+
+	"github.com/RangelReale/osin"
 )
 
 // @params
@@ -41,9 +42,9 @@ func AuthorizeHandler(w http.ResponseWriter, r *http.Request) {
 
 		// 校验用户数据
 		resposne, _ := PostAPI(cfg.API+"login", map[string]interface{}{
-			"email":            r.PostForm.Get("login"),
-			"passwd":           r.PostForm.Get("password"),
-			"inner_api_secret": cfg.Secret,
+			"email":  r.PostForm.Get("login"),
+			"passwd": r.PostForm.Get("password"),
+			"xauth":  cfg.Secret,
 		})
 
 		api = DecodeAPIResponse(resposne)

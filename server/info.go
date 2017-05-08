@@ -2,8 +2,10 @@ package server
 
 import (
 	"fmt"
-	"github.com/RangelReale/osin"
+	"log"
 	"net/http"
+
+	"github.com/RangelReale/osin"
 )
 
 // code
@@ -21,9 +23,9 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 	if !resp.IsError {
 		resp = server.NewResponse()
 		if r.Form.Get("uid") != "" { // Load account data from *INNER* API
-			response, _ := GetAPI(cfg.API+"user", map[string]interface{}{
-				"uid":              r.Form.Get("uid"),
-				"inner_api_secret": cfg.Secret,
+			response, _ := PostAPI(cfg.API+"user", map[string]interface{}{
+				"uid":   r.Form.Get("uid"),
+				"xauth": cfg.Secret,
 			})
 
 			data := DecodeAPIResponse(response)
@@ -33,6 +35,7 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 			resp.Output["avatar"] = data.Result["avatar"]
 			resp.Output["status"] = data.Result["status"]
 			resp.Output["created_at"] = data.Result["created_at"]
+			log.Println(data)
 		} else {
 			resp.Output["error"] = "invalid uid given"
 		}
