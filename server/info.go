@@ -31,6 +31,7 @@ func InfoHandler(w http.ResponseWriter, r *http.Request) {
 			data := DecodeAPIResponse(response)
 			resp.Output["uid"] = data.Result["uid"]
 			resp.Output["name"] = data.Result["name"]
+			resp.Output["nickname"] = data.Result["nickname"]
 			resp.Output["email"] = data.Result["email"]
 			resp.Output["avatar"] = data.Result["avatar"]
 			resp.Output["status"] = data.Result["status"]

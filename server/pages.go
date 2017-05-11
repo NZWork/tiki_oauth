@@ -133,24 +133,32 @@ const OAuthTemplate = `
 const JS = `
     <script src="//cdn.bootcss.com/jquery/3.1.1/jquery.min.js"></script>
     <script type="text/javascript">
+    function login() {
+        $.ajax({
+            type: 'POST',
+            url: '%s/authorize?%s',
+            data: {
+                login: $('#email').val(),
+                password: $('#password').val(),
+            },
+            success: function(data) {
+                console.log(data);
+                if (data.error != undefined) {
+                alert(data.error_description);
+                } else if (data.redirect_uri != undefined) {
+                top.location.href = data.redirect_uri;
+                }
+            },
+        });
+    }
 	$('#login').on('click', function() {
-	    $.ajax({
-		type: 'POST',
-		url: '%s/authorize?%s',
-		data: {
-			login: $('#email').val(),
-			password: $('#password').val(),
-		},
-		success: function(data) {
-		    console.log(data);
-		    if (data.error != undefined) {
-			alert(data.error_description);
-		    } else if (data.redirect_uri != undefined) {
-			top.location.href = data.redirect_uri;
-		    }
-		},
-	    });
+        login()
 	});
+    $('.inputs').keydown(function(event) {
+        if (event.which == 13) {
+            login()
+        }
+    })
     </script>
 </body>
 
