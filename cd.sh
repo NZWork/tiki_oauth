@@ -2,7 +2,7 @@
 CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build
 
 # rsync
-rsync -v product.toml tiki_oauth neo@10.1.1.7:/home/neo/docker/images/tiki_oauth/
+rsync -e 'ssh -p 1027' -v product.toml tiki_oauth neo@amoy.layer.nevoz.com:/home/neo/docker/images/tiki_oauth/
 
 # Deploy
-ssh neo@10.1.1.7 /home/neo/docker/images/tiki_oauth/deploy.sh
+ssh neo@amoy.layer.nevoz.com -p 1027 /home/neo/docker/images/tiki_oauth/deploy.sh
