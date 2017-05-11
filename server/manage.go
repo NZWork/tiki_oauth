@@ -1,15 +1,16 @@
 package server
 
 import (
-	"github.com/RangelReale/osin"
 	"net/http"
+
+	"github.com/RangelReale/osin"
 )
 
 func recoverTikiOAuth(w http.ResponseWriter, r *http.Request) {
 	client := &osin.DefaultClient{
 		Id:          "test",
 		Secret:      "12jh3gas623g",
-		RedirectUri: "https://app.dev.tiki.im/login/callback",
+		RedirectUri: "https://tiki.im/login/callback",
 	}
 
 	err := storage.CreateClient(client)

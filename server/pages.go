@@ -39,7 +39,7 @@ const OAuthTemplate = `
 
     .logo {
 	padding-top: 32px;
-	background: url('https://tiki.im/assets/images/logo.png') no-repeat;
+	background: url('https://tiki.im/images/logo.png') no-repeat;
 	background-size: 100px;
 	background-position: center center;
 	width: 100%;
